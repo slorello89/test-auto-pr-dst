@@ -1,1 +1,266 @@
-new test
+{
+	"dotnet": {
+		"syntax": "Csharp",
+		"sections": [
+			{
+				"header": "Install the library",
+				"code": "dotnet add package Vonage",
+				"keysToReplace": [],
+				"syntax": "Bash"
+			},
+			{
+				"header": "Import Dependencies",
+				"code": "using Vonage.Verify;\nusing Vonage;\nusing Vonage.Request;",
+				"keysToReplace": []
+			},
+			{
+				"header": "Initialize the library",
+				"code": "var credentials = Credentials.FromApiKeyAndSecret(\"VONAGE_API_KEY\", \"VONAGE_API_SECRET\");\nvar client = new VonageClient(credentials);",
+				"keysToReplace": [
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Make a verification request",
+				"code": "var request = new VerifyRequest() { Brand = \"BRAND_NAME\", Number = \"RECIPIENT_NUMBER\" };\nvar response = client.VerifyClient.VerifyRequest(request);",
+				"keysToReplace": [
+					"RECIPIENT_NUMBER",
+					"BRAND_NAME",
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Check the request with a code",
+				"code": "var request = new VerifyCheckRequest() { Code = CODE, RequestId = REQUEST_ID };\nvar response = client.VerifyClient.VerifyCheck(request);",
+				"keysToReplace": []
+			},
+			{
+				"header": "Cancel The Request",
+				"code": "var request = new VerifyControlRequest() { RequestId = REQUEST_ID, Cmd = \"cancel\" };\n\nvar response = client.VerifyClient.VerifyControl(request);",
+				"keysToReplace": []
+			}
+		]
+	},
+	"curl": {
+		"syntax": "Bash",
+		"sections": [
+			{
+				"header": "Make a verification request",
+				"code": "curl -X GET \"https://api.nexmo.com/verify/json?&api_key=VONAGE_API_KEY&api_secret=VONAGE_API_SECRET&number=RECIPIENT_NUMBER&brand=AcmeInc\"",
+				"keysToReplace": [
+					"RECIPIENT_NUMBER",
+					"BRAND_NAME",
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Check the request with a code",
+				"code": "curl -X GET \"https://api.nexmo.com/verify/check/json?&api_key=$VONAGE_API_KEY&api_secret=$VONAGE_API_SECRET&request_id=$REQUEST_ID&code=$CODE\"",
+				"keysToReplace": []
+			},
+			{
+				"header": "Cancel The Request",
+				"code": "curl -X GET \"https://api.nexmo.com/verify/control/json?api_key=$VONAGE_API_KEY&api_secret=$VONAGE_API_SECRET&request_id=$REQUEST_ID&cmd=cancel\"",
+				"keysToReplace": []
+			}
+		]
+	},
+	"java": {
+		"syntax": "java",
+		"sections": [
+			{
+				"header": "Install the library",
+				"code": "compile 'com.vonage:client:[6.1.0,7.0.0)'",
+				"keysToReplace": [],
+				"syntax": "Bash"
+			},
+			{
+				"header": "Initialize the library",
+				"code": "VonageClient client = VonageClient.builder().apiKey(\"VONAGE_API_KEY\").apiSecret(\"VONAGE_API_SECRET\").build();",
+				"keysToReplace": [
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Make a verification request",
+				"code": "VerifyResponse response = client.getVerifyClient().verify(\"RECIPIENT_NUMBER\", \"BRAND_NAME\");\n\nif (response.getStatus() == VerifyStatus.OK) {\n    System.out.printf(\"RequestID: %s\", response.getRequestId());\n} else {\n    System.out.printf(\"ERROR! %s: %s\", response.getStatus(), response.getErrorText());\n}",
+				"keysToReplace": [
+					"RECIPIENT_NUMBER",
+					"BRAND_NAME",
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Check the request with a code",
+				"code": "CheckResponse response = client.getVerifyClient().check(REQUEST_ID, CODE);\n\nif (response.getStatus() == VerifyStatus.OK) {\n    System.out.println(\"Verification Successful\");\n} else {\n    System.out.println(\"Verification failed: \" + response.getErrorText());\n}",
+				"keysToReplace": []
+			},
+			{
+				"header": "Cancel The Request",
+				"code": "client.getVerifyClient().cancelVerification(REQUEST_ID);\nSystem.out.println(\"Verification cancelled.\");",
+				"keysToReplace": []
+			}
+		]
+	},
+	"node": {
+		"syntax": "Javascript",
+		"sections": [
+			{
+				"header": "Install the library",
+				"code": "npm install @vonage/server-sdk",
+				"keysToReplace": [],
+				"syntax": "Bash"
+			},
+			{
+				"header": "Initialize the library",
+				"code": "const Vonage = require('@vonage/server-sdk');\nconst vonage = new Vonage({\n  apiKey: \"VONAGE_API_KEY\",\n  apiSecret: \"VONAGE_API_SECRET\"\n});",
+				"keysToReplace": [
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Make a verification request",
+				"code": "vonage.verify.request({\n  number: \"RECIPIENT_NUMBER\",\n  brand: \"BRAND_NAME\"\n}, (err, result) => {\n  if (err) {\n    console.error(err);\n  } else {\n    const verifyRequestId = result.request_id;\n    console.log('request_id', verifyRequestId);\n  }\n});",
+				"keysToReplace": [
+					"RECIPIENT_NUMBER",
+					"BRAND_NAME",
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Check the request with a code",
+				"code": "vonage.verify.check({\n  request_id: REQUEST_ID,\n  code: CODE\n}, (err, result) => {\n  if (err) {\n    console.error(err);\n  } else {\n    console.log(result);\n  }\n});",
+				"keysToReplace": []
+			},
+			{
+				"header": "Cancel The Request",
+				"code": "vonage.verify.control({\n  request_id: REQUEST_ID,\n  cmd: 'cancel'\n}, (err, result) => {\n  if (err) {\n    console.error(err);\n  } else {\n    console.log(result);\n  }\n});",
+				"keysToReplace": []
+			}
+		]
+	},
+	"php": {
+		"syntax": "PHP",
+		"sections": [
+			{
+				"header": "Install the library",
+				"code": "composer require vonage/client",
+				"keysToReplace": [],
+				"syntax": "Bash"
+			},
+			{
+				"header": "Initialize the library",
+				"code": "$basic  = new \\Vonage\\Client\\Credentials\\Basic(\"VONAGE_API_KEY\", \"VONAGE_API_SECRET\");\n$client = new \\Vonage\\Client(new \\Vonage\\Client\\Credentials\\Container($basic));",
+				"keysToReplace": [
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Make a verification request",
+				"code": "$request = new \\Vonage\\Verify\\Request(NUMBER, \"BRAND_NAME\");\n$response = $client->verify()->start($request);\n\necho \"Started verification, `request_id` is \" . $response->getRequestId();",
+				"keysToReplace": [
+					"RECIPIENT_NUMBER",
+					"BRAND_NAME",
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Check the request with a code",
+				"code": "$result = $client->verify()->check(REQUEST_ID, CODE);\n\nvar_dump($result->getResponseData());",
+				"keysToReplace": []
+			},
+			{
+				"header": "Cancel The Request",
+				"code": "try {\n    $result = $client->verify()->cancel(REQUEST_ID);\n    var_dump($result->getResponseData());\n}\n\ncatch(Exception $e) {\n    echo 'Message: ' .$e->getMessage();\n}",
+				"keysToReplace": []
+			}
+		]
+	},
+	"python": {
+		"syntax": "Python",
+		"sections": [
+			{
+				"header": "Install the library",
+				"code": "pip install vonage",
+				"keysToReplace": [],
+				"syntax": "Bash"
+			},
+			{
+				"header": "Initialize the library",
+				"code": "client = vonage.Client(key=\"VONAGE_API_KEY\", secret=\"VONAGE_API_SECRET\")\nverify = vonage.Verify(client)",
+				"keysToReplace": [
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Make a verification request",
+				"code": "response = verify.start_verification(number=\"RECIPIENT_NUMBER\", brand=\"AcmeInc\")\n\nif response[\"status\"] == \"0\":\n    print(\"Started verification request_id is %s\" % (response[\"request_id\"]))\nelse:\n    print(\"Error: %s\" % response[\"error_text\"])",
+				"keysToReplace": [
+					"RECIPIENT_NUMBER",
+					"BRAND_NAME",
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Check the request with a code",
+				"code": "response = verify.check(REQUEST_ID, code=CODE)\n\nif response[\"status\"] == \"0\":\n    print(\"Verification successful, event_id is %s\" % (response[\"event_id\"]))\nelse:\n    print(\"Error: %s\" % response[\"error_text\"])",
+				"keysToReplace": []
+			},
+			{
+				"header": "Cancel The Request",
+				"code": "response = verify.cancel(REQUEST_ID)\n\nif response[\"status\"] == \"0\":\n    print(\"Cancellation successful\")\nelse:\n    print(\"Error: %s\" % response[\"error_text\"])",
+				"keysToReplace": []
+			}
+		]
+	},
+	"ruby": {
+		"syntax": "Ruby",
+		"sections": [
+			{
+				"header": "Install the library",
+				"code": "gem install vonage",
+				"keysToReplace": [],
+				"syntax": "Bash"
+			},
+			{
+				"header": "Initialize the library",
+				"code": "client = Vonage::Client.new(\n  api_key: \"VONAGE_API_KEY\",\n  api_secret: \"VONAGE_API_SECRET\"\n)",
+				"keysToReplace": [
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Make a verification request",
+				"code": "response = client.verify.request(\n  number: TO_NUMBER,\n  brand: 'AcmeInc'\n)\n\nif response\n  # display the Verify `request_id`\n  puts response.request_id\nend\n",
+				"keysToReplace": [
+					"RECIPIENT_NUMBER",
+					"BRAND_NAME",
+					"VONAGE_API_KEY",
+					"VONAGE_API_SECRET"
+				]
+			},
+			{
+				"header": "Check the request with a code",
+				"code": "response = client.verify.check(\n  request_id: REQUEST_ID,\n  code: CODE\n)\n\n# when the check is successful\nif response\n  # the cost of this verification\n  puts response.price\n  # the currency ofthe cost\n  puts response.currency\nend\n",
+				"keysToReplace": []
+			},
+			{
+				"header": "Cancel The Request",
+				"code": "response = client.verify.cancel(REQUEST_ID)\n",
+				"keysToReplace": []
+			}
+		]
+	}
+}
