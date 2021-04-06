@@ -1,0 +1,676 @@
+{
+	"voice": {
+		"dotnet": {
+			"syntax": "Csharp",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "dotnet add package Vonage",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Import Dependencies",
+					"code": "using Vonage.Request;\nusing Vonage;\nusing Vonage.Voice;\nusing Vonage.Voice.Nccos;\nusing Vonage.Voice.Nccos.Endpoints;",
+					"keysToReplace": []
+				},
+				{
+					"header": "Initialize the library",
+					"code": "var creds = Credentials.FromAppIdAndPrivateKeyPath(\"VONAGE_APPLICATION_ID\", \"VONAGE_PRIVATE_KEY_PATH\");\nvar client = new VonageClient(creds);",
+					"keysToReplace": [
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "var toEndpoint = new PhoneEndpoint() { Number = \"TO_NUMBER\" };\nvar fromEndpoint = new PhoneEndpoint() { Number = \"VONAGE_NUMBER\" };\nvar extraText = \"\";\nfor (var i = 0; i < 50; i++)\n    extraText += $\"{i} \";\nvar talkAction = new TalkAction() { Text = \"This is a text to speech call from Vonage \" + extraText };\nvar ncco = new Ncco(talkAction);\n\nvar command = new CallCommand() { To = new Endpoint[] { toEndpoint }, From = fromEndpoint, Ncco = ncco, EventUrl = EVENT_URL };\nvar response = client.VoiceClient.CreateCall(command);",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_NUMBER",
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				}
+			]
+		},
+		"curl": {
+			"syntax": "Bash",
+			"sections": [
+				{
+					"header": "Write the code",
+					"code": "curl -X POST https://api.nexmo.com/v1/calls\\\n  -H \"Authorization: Bearer \"$JWT\\\n  -H \"Content-Type: application/json\"\\\n  -d '{\"to\":[{\"type\": \"phone\",\"number\": \"'TO_NUMBER'\"}],\n      \"from\": {\"type\": \"phone\",\"number\": \"'VONAGE_NUMBER'\"},\n      \"ncco\": [\n        {\n          \"action\": \"talk\",\n          \"text\": \"This is a text to speech call from Vonage\"\n        }\n      ]}'\n",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_NUMBER",
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				}
+			]
+		},
+		"java": {
+			"syntax": "java",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "compile 'com.vonage:client:[6.1.0,7.0.0)'",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "VonageClient client = VonageClient.builder()\n        .applicationId(\"VONAGE_APPLICATION_ID\")\n        .privateKeyPath(\"VONAGE_PRIVATE_KEY_PATH\")\n        .build();",
+					"keysToReplace": [
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "Ncco ncco = new Ncco(TalkAction.builder(\"This is a text to speech call from Vonage\").build());\n\nclient.getVoiceClient().createCall(new Call(\"TO_NUMBER\", \"VONAGE_NUMBER\", ncco));",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_NUMBER",
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				}
+			]
+		},
+		"node": {
+			"syntax": "Javascript",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "npm install @vonage/server-sdk",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "const Vonage = require('@vonage/server-sdk')\n\nconst vonage = new Vonage({\n  apiKey: VONAGE_API_KEY,\n  apiSecret: VONAGE_API_SECRET,\n  applicationId: \"VONAGE_APPLICATION_ID\",\n  privateKey: VONAGE_APPLICATION_PRIVATE_KEY_PATH\n})",
+					"keysToReplace": [
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "vonage.calls.create({\n  to: [{\n    type: 'phone',\n    number: \"TO_NUMBER\"\n  }],\n  from: {\n    type: 'phone',\n    number: \"VONAGE_NUMBER\"\n  },\n  ncco: [{\n    \"action\": \"talk\",\n    \"text\": \"This is a text to speech call from Vonage\"\n  }]\n}, (error, response) => {\n  if (error) console.error(error)\n  if (response) console.log(response)\n})",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_NUMBER",
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				}
+			]
+		},
+		"php": {
+			"syntax": "PHP",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "composer require vonage/client",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Import Dependencies",
+					"code": "use Vonage\\Voice\\NCCO\\NCCO;",
+					"keysToReplace": []
+				},
+				{
+					"header": "Initialize the library",
+					"code": "require_once __DIR__ . '/../../config.php';\nrequire_once __DIR__ . '/../../vendor/autoload.php';\n\n$keypair = new \\Vonage\\Client\\Credentials\\Keypair(\n    file_get_contents(VONAGE_APPLICATION_PRIVATE_KEY_PATH),\n    \"VONAGE_APPLICATION_ID\"\n);\n$client = new \\Vonage\\Client($keypair);",
+					"keysToReplace": [
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "$outboundCall = new \\Vonage\\Voice\\OutboundCall(\n    new \\Vonage\\Voice\\Endpoint\\Phone(\"TO_NUMBER\"),\n    new \\Vonage\\Voice\\Endpoint\\Phone(\"VONAGE_NUMBER\")\n);\n$ncco = new NCCO();\n$ncco->addAction(new \\Vonage\\Voice\\NCCO\\Action\\Talk('This is a text to speech call from Nexmo'));\n$outboundCall->setNCCO($ncco);\n\n$response = $client->voice()->createOutboundCall($outboundCall);\n\nvar_dump($response);",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_NUMBER",
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				}
+			]
+		},
+		"python": {
+			"syntax": "Python",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "pip install vonage",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "client = vonage.Client(\n    application_id=\"VONAGE_APPLICATION_ID\",\n    private_key=VONAGE_APPLICATION_PRIVATE_KEY_PATH,\n)",
+					"keysToReplace": [
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "voice = vonage.Voice(client)\n\nresponse = voice.create_call({\n    'to': [{'type': 'phone', 'number': \"TO_NUMBER\"}],\n    'from': {'type': 'phone', 'number': \"VONAGE_NUMBER\"},\n    'ncco': [{'action': 'talk', 'text': 'This is a text to speech call from Nexmo'}]\n})\n\npprint(response)",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_NUMBER",
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				}
+			]
+		},
+		"ruby": {
+			"syntax": "Ruby",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "gem install vonage",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "client = Vonage::Client.new(\n  application_id: \"VONAGE_APPLICATION_ID\",\n  private_key: File.read(VONAGE_APPLICATION_PRIVATE_KEY_PATH)\n)",
+					"keysToReplace": [
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "client.voice.create(\n  to: [{\n    type: 'phone',\n    number: \"TO_NUMBER\"\n  }],\n  from: {\n    type: 'phone',\n    number: \"VONAGE_NUMBER\"\n  },\n  ncco: [\n    {\n      'action' => 'talk',\n      'text' => 'This is a text to speech call from Vonage'\n    }\n  ]\n)",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_NUMBER",
+						"VONAGE_PRIVATE_KEY_PATH",
+						"VONAGE_APPLICATION_ID"
+					]
+				}
+			]
+		}
+	},
+	"numberInsight": {
+		"dotnet": {
+			"syntax": "Csharp",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "dotnet add package Vonage",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Import Dependencies",
+					"code": "using Vonage;\nusing Vonage.NumberInsights;\nusing Vonage.Request;",
+					"keysToReplace": []
+				},
+				{
+					"header": "Initialize the library",
+					"code": "var creds = Credentials.FromApiKeyAndSecret(\"VONAGE_API_KEY\", \"VONAGE_API_SECRET\");\nvar client = new VonageClient(creds);",
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "var request = new AdvancedNumberInsightRequest() { Number = \"INSIGHT_NUMBER\"};\nvar response = client.NumberInsightClient.GetNumberInsightAdvanced(request);",
+					"keysToReplace": [
+						"INSIGHT_NUMBER",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"curl": {
+			"syntax": "Bash",
+			"sections": [
+				{
+					"header": "Write the code",
+					"code": "source \"../config.sh\"\n\ncurl \"https://api.nexmo.com/ni/advanced/json?api_key=VONAGE_API_KEY&api_secret=VONAGE_API_SECRET&number=INSIGHT_NUMBER\"\n",
+					"keysToReplace": [
+						"INSIGHT_NUMBER",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"java": {
+			"syntax": "java",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "compile 'com.vonage:client:[6.1.0,7.0.0)'",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "VonageClient client = VonageClient.builder().apiKey(\"VONAGE_API_KEY\").apiSecret(\"VONAGE_API_SECRET\").build();",
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "AdvancedInsightResponse response = client.getInsightClient().getAdvancedNumberInsight(\"INSIGHT_NUMBER\");\n\nSystem.out.println(\"BASIC INFO:\");\nSystem.out.println(\"International format: \" + response.getInternationalFormatNumber());\nSystem.out.println(\"National format: \" + response.getNationalFormatNumber());\nSystem.out.println(\"Country: \" + response.getCountryName() + \" (\" + response.getCountryCodeIso3() + \", +\"\n        + response.getCountryPrefix() + \")\");\nSystem.out.println();\nSystem.out.println(\"STANDARD INFO:\");\nSystem.out.println(\"Current carrier: \" + response.getCurrentCarrier().getName());\nSystem.out.println(\"Original carrier: \" + response.getOriginalCarrier().getName());\n\nSystem.out.println();\nSystem.out.println(\"ADVANCED INFO:\");\nSystem.out.println(\"Validity: \" + response.getValidNumber());\nSystem.out.println(\"Reachability: \" + response.getReachability());\nSystem.out.println(\"Ported status: \" + response.getPorted());\n\nRoamingDetails roaming = response.getRoaming();\nif (roaming == null) {\n    System.out.println(\"- No Roaming Info -\");\n} else {\n    System.out.println(\"Roaming status: \" + roaming.getStatus());\n    if (response.getRoaming().getStatus() == RoamingDetails.RoamingStatus.ROAMING) {\n        System.out.print(\"    Currently roaming in: \" + roaming.getRoamingCountryCode());\n        System.out.println(\" on the network \" + roaming.getRoamingNetworkName());\n    }\n}",
+					"keysToReplace": [
+						"INSIGHT_NUMBER",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"node": {
+			"syntax": "Javascript",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "npm install @vonage/server-sdk",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "const Vonage = require('@vonage/server-sdk');\n\nconst vonage = new Vonage({\n  apiKey: \"VONAGE_API_KEY\",\n  apiSecret: \"VONAGE_API_SECRET\"\n});",
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "vonage.numberInsight.get({level: 'advancedSync', number: \"INSIGHT_NUMBER\"}, (error, result) => {\n  if(error) {\n    console.error(error);\n  }\n  else {\n    console.log(result);\n  }\n});",
+					"keysToReplace": [
+						"INSIGHT_NUMBER",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"php": {
+			"syntax": "PHP",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "composer require vonage/client",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Write the code",
+					"code": "$basic  = new \\Vonage\\Client\\Credentials\\Basic(\"VONAGE_API_KEY\", \"VONAGE_API_SECRET\");\n$client = new \\Vonage\\Client($basic);\n\n$insights = $client->insights()->advanced(\"INSIGHT_NUMBER\");",
+					"keysToReplace": [
+						"INSIGHT_NUMBER",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"python": {
+			"syntax": "Python",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "pip install vonage",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Write the code",
+					"code": "client = vonage.Client(key=\"VONAGE_API_KEY\", secret=\"VONAGE_API_SECRET\")\n\ninsight_json = client.get_advanced_number_insight(number=\"INSIGHT_NUMBER\")\npprint(insight_json)",
+					"keysToReplace": [
+						"INSIGHT_NUMBER",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"ruby": {
+			"syntax": "Ruby",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "gem install vonage",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "client = Vonage::Client.new(\n  api_key: \"VONAGE_API_KEY\",\n  api_secret: \"VONAGE_API_SECRET\"\n)",
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "insight = client.number_insight.advanced(\n  number: \"INSIGHT_NUMBER\"\n)\n\nputs insight.inspect",
+					"keysToReplace": [
+						"INSIGHT_NUMBER",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		}
+	},
+	"sms": {
+		"dotnet": {
+			"syntax": "Csharp",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "dotnet add package Vonage",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Import Dependencies",
+					"code": "using Vonage;\nusing Vonage.Request;",
+					"keysToReplace": []
+				},
+				{
+					"header": "Initialize the library",
+					"code": "var credentials = Credentials.FromApiKeyAndSecret(\n    \"VONAGE_API_KEY\",\n    \"VONAGE_API_SECRET\"\n    );\n\nvar VonageClient = new VonageClient(credentials);",
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "var response = VonageClient.SmsClient.SendAnSms(new Vonage.Messaging.SendSmsRequest()\n{\n    To = \"TO_NUMBER\",\n    From = \"VONAGE_BRAND_NAME\",\n    Text = \"A text message sent using the Vonage SMS API\"\n});",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_BRAND_NAME",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"curl": {
+			"syntax": "Bash",
+			"sections": [
+				{
+					"header": "Write the code",
+					"code": "curl -X \"POST\" \"https://rest.nexmo.com/sms/json\" \\\n  -d \"from=VONAGE_BRAND_NAME\" \\\n  -d \"text=A text message sent using the Vonage SMS API\" \\\n  -d \"to=TO_NUMBER\" \\\n  -d \"api_key=VONAGE_API_KEY\" \\\n  -d \"api_secret=VONAGE_API_SECRET\"",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_BRAND_NAME",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"java": {
+			"syntax": "java",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "compile 'com.vonage:client:[6.1.0,7.0.0)'",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "VonageClient client = VonageClient.builder().apiKey(\"VONAGE_API_KEY\").apiSecret(\"VONAGE_API_SECRET\").build();",
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "TextMessage message = new TextMessage(\"VONAGE_BRAND_NAME\",\n        \"TO_NUMBER\",\n        \"A text message sent using the Vonage SMS API\"\n);\n\nSmsSubmissionResponse response = client.getSmsClient().submitMessage(message);\n\nif (response.getMessages().get(0).getStatus() == MessageStatus.OK) {\n    System.out.println(\"Message sent successfully.\");\n} else {\n    System.out.println(\"Message failed with error: \" + response.getMessages().get(0).getErrorText());\n}",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_BRAND_NAME",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"node": {
+			"syntax": "Javascript",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "npm install @vonage/server-sdk",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "const Vonage = require('@vonage/server-sdk')\n\nconst vonage = new Vonage({\n  apiKey: \"VONAGE_API_KEY\",\n  apiSecret: \"VONAGE_API_SECRET\"\n})",
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "const from = \"VONAGE_BRAND_NAME\"\nconst to = \"TO_NUMBER\"\nconst text = 'A text message sent using the Vonage SMS API'\n\nvonage.message.sendSms(from, to, text, (err, responseData) => {\n    if (err) {\n        console.log(err);\n    } else {\n        if(responseData.messages[0]['status'] === \"0\") {\n            console.log(\"Message sent successfully.\");\n        } else {\n            console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);\n        }\n    }\n})",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_BRAND_NAME",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"php": {
+			"syntax": "PHP",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "composer require vonage/client",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "$basic  = new \\Vonage\\Client\\Credentials\\Basic(\"VONAGE_API_KEY\", \"VONAGE_API_SECRET\");\n$client = new \\Vonage\\Client($basic);",
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "$response = $client->sms()->send(\n    new \\Vonage\\SMS\\Message\\SMS(\"TO_NUMBER\", BRAND_NAME, 'A text message sent using the Nexmo SMS API')\n);\n\n$message = $response->current();\n\nif ($message->getStatus() == 0) {\n    echo \"The message was sent successfully\\n\";\n} else {\n    echo \"The message failed with status: \" . $message->getStatus() . \"\\n\";\n}",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_BRAND_NAME",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"python": {
+			"syntax": "Python",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "pip install vonage",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "client = vonage.Client(key=\"VONAGE_API_KEY\", secret=\"VONAGE_API_SECRET\")\nsms = vonage.Sms(client)",
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "responseData = sms.send_message(\n    {\n        \"from\": \"VONAGE_BRAND_NAME\",\n        \"to\": \"TO_NUMBER\",\n        \"text\": \"A text message sent using the Nexmo SMS API\",\n    }\n)\n\nif responseData[\"messages\"][0][\"status\"] == \"0\":\n    print(\"Message sent successfully.\")\nelse:\n    print(f\"Message failed with error: {responseData['messages'][0]['error-text']}\")",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_BRAND_NAME",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		},
+		"ruby": {
+			"syntax": "Ruby",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "gem install vonage",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Initialize the library",
+					"code": "client = Vonage::Client.new(\n  api_key: \"VONAGE_API_KEY\",\n  api_secret: \"VONAGE_API_SECRET\"\n)",
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				},
+				{
+					"header": "Write the code",
+					"code": "client.sms.send(\n  from: \"VONAGE_BRAND_NAME\",\n  to: \"TO_NUMBER\",\n  text: 'A text message sent using the Vonage SMS API'\n)",
+					"keysToReplace": [
+						"TO_NUMBER",
+						"VONAGE_BRAND_NAME",
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET"
+					]
+				}
+			]
+		}
+	},
+	"messages": {
+		"curl": {
+			"syntax": "Bash",
+			"sections": [
+				{
+					"header": "Write the code",
+					"code": "CHANNELS",
+					"channels": {
+						"sms": "curl -X POST https://api.nexmo.com/v0.1/messages \\\r\n  -u 'VONAGE_API_KEY:VONAGE_API_SECRET'\\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Accept: application/json' \\\r\n  -d '{\r\n    \"from\": { \"type\": \"sms\", \"number\": \"SENDER_ID\" },\r\n    \"to\": { \"type\": \"sms\", \"number\": \"TO_NUMBER\" },\r\n    \"message\": {\r\n      \"content\": {\r\n        \"type\": \"text\",\r\n        \"text\": \"MESSAGE_TEXT\"\r\n      }\r\n    }\r\n  }'",
+						"whatsapp": "# This example lets you try it out with our test account.\n# Find out how you can get a WhatsApp approved business account here: \n# https://developer.nexmo.com/messages/concepts/whatsapp \ncurl -X POST https://api.nexmo.com/v0.1/messages \\\r\n  -u 'VONAGE_API_KEY:VONAGE_API_SECRET'\\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Accept: application/json' \\\r\n  -d '{\r\n    \"from\": { \"type\": \"whatsapp\", \"number\": \"WHATSAPP_NUMBER\" },\r\n    \"to\": { \"type\": \"whatsapp\", \"number\": \"WHATSAPP_NUMBER\" },\r\n    \"message\": {\r\n      \"content\": {\r\n        \"type\": \"text\",\r\n        \"text\": \"MESSAGE_TEXT\"\r\n      }\r\n    }\r\n  }'",
+						"viber": "# This example lets you try it out with our test account.\n# Find out how you can get a Viber approved business account here: \n# https://developer.nexmo.com/messages/concepts/viber \ncurl -X POST https://api.nexmo.com/v0.1/messages \\\r\n  -u 'VONAGE_API_KEY:VONAGE_API_SECRET'\\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Accept: application/json' \\\r\n  -d '{\r\n    \"from\": { \"type\": \"viber_service_msg\", \"number\": \"VIBER_SERVICE_NUMBER\" },\r\n    \"to\": { \"type\": \"viber_service_msg\", \"number\": \"TO_NUMBER\" },\r\n    \"message\": {\r\n      \"content\": {\r\n        \"type\": \"text\",\r\n        \"text\": \"MESSAGE_TEXT\"\r\n      }\r\n    }\r\n  }'",
+						"facebook": "# This example lets you try it out with our test account.\n# Find out how you can get a Facebook approved business account here: \n# https://developer.nexmo.com/messages/concepts/facebook \ncurl -X POST https://api.nexmo.com/v0.1/messages \\\r\n  -u 'VONAGE_API_KEY:VONAGE_API_SECRET'\\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Accept: application/json' \\\r\n  -d '{\r\n    \"from\": { \"type\": \"messenger\", \"id\": \"FACEBOOK_PAGE_ID\" },\r\n    \"to\": { \"type\": \"messenger\", \"id\": \"FACEBOOK_RECIPIENT_ID\" },\r\n    \"message\": {\r\n      \"content\": {\r\n        \"type\": \"text\",\r\n        \"text\": \"MESSAGE_TEXT\"\r\n      }\r\n    }\r\n  }'"
+					},
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET",
+						"SENDER_ID",
+						"MESSAGE_TEXT",
+						"TO_NUMBER",
+						"WHATSAPP_NUMBER"
+					]
+				}
+			]
+		},
+		"dotnet": {
+			"syntax": "Csharp",
+			"sections": [
+				{
+					"header": "",
+					"code": "",
+					"keysToReplace": []
+				}
+			]
+		},
+		"java": {
+			"syntax": "java",
+			"sections": [
+				{
+					"header": "",
+					"code": "",
+					"keysToReplace": []
+				}
+			]
+		},
+		"node": {
+			"syntax": "Javascript",
+			"sections": [
+				{
+					"header": "Install the library",
+					"code": "npm install @vonage/server-sdk@beta",
+					"keysToReplace": [],
+					"syntax": "Bash"
+				},
+				{
+					"header": "Write the code",
+					"code": "const Vonage = require('vonage');\n\nconst vonage = new Vonage({\n  apiKey: 'VONAGE_API_KEY',\n  apiSecret: 'VONAGE_API_SECRET',\n});\n\nconst message = {\n  content: {\n    type: 'text',\n    text: 'MESSAGE_TEXT',\n  },\n};\n\nCHANNELS\n",
+					"channels": {
+						"sms": "vonage.channel.send(\n  { type: 'sms', number: 'TO_NUMBER' },\n  { type: 'sms', number: 'SENDER_ID' },\n  message,\n  (err, data) => { console.log(data.message_uuid); },\n  { useBasicAuth: true },\n);",
+						"whatsapp": "// This example lets you try it out with our test account.\n// Find out how you can get a WhatsApp approved business account here:\n// https://developer.nexmo.com/messages/concepts/whatsapp\nvonage.channel.send(\n  { type: 'whatsapp', number: 'WHATSAPP_NUMBER' },\n  { type: 'whatsapp', number: 'WHATSAPP_NUMBER' },\n  message,\n  (err, data) => { console.log(data.message_uuid); }\n);",
+						"viber": "// This example lets you try it out with our test account.\n// Find out how you can get a Viber approved business account here:\n// https://developer.nexmo.com/messages/concepts/viber\nvonage.channel.send(\r\n  { type: 'viber_service_msg', number: 'TO_NUMBER' },\r\n  { type: 'viber_service_msg', id: 'VIBER_SERVICE_MESSAGE_ID' },\r\n  message,\r\n  (err, data) => { console.log(data.message_uuid); }\r\n);",
+						"facebook": "// This example lets you try it out with our test account.\n// Find out how you can get a Facebook approved business account here:\n// https://developer.nexmo.com/messages/concepts/facebook\nvonage.channel.send(\r\n  { type: 'messenger', id: 'FACEBOOK_RECIPIENT_ID' },\r\n  { type: 'messenger', id: 'FACEBOOK_PAGE_ID' },\r\n  message,\r\n  (err, data) => { console.log(data.message_uuid); }\r);"
+					},
+					"keysToReplace": [
+						"VONAGE_API_KEY",
+						"VONAGE_API_SECRET",
+						"SENDER_ID",
+						"MESSAGE_TEXT",
+						"TO_NUMBER",
+						"WHATSAPP_NUMBER"
+					]
+				}
+			]
+		},
+		"ruby": {
+			"syntax": "Ruby",
+			"sections": [
+				{
+					"header": "",
+					"code": "",
+					"keysToReplace": []
+				}
+			]
+		},
+		"python": {
+			"syntax": "Python",
+			"sections": [
+				{
+					"header": "",
+					"code": "",
+					"keysToReplace": []
+				}
+			]
+		},
+		"php": {
+			"syntax": "PHP",
+			"sections": [
+				{
+					"header": "",
+					"code": "",
+					"keysToReplace": []
+				}
+			]
+		}
+	}
+}
